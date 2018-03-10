@@ -48,14 +48,14 @@ pfaces = [faces1; faces2; faces3];
 % Make sure you understand how this is equivalent to the math
 %   we went over in class.
 function xys = findXYs(verts, pfaces)
-	v3v1 = e31 = verts(pfaces(:, 3), :) - verts(pfaces(:, 1), :);
-	w = verts(pfaces(:, 2), :) - verts(pfaces(:, 1), :);
-	w_perp = [-e21(:, 2), e21(:, 1)];
-	w_dot_w = dot(e21, e21, 2);
-	x = dot(v3v1, w, 2) ./ w_dot_w;
-	% dot(w, w) == dot(w_perp, w_perp)
-	y = dot(v3v1, w_perp, 2) ./ w_dot_w;
-	xys = [x, y];
+    v3v1 = verts(pfaces(:, 3), :) - verts(pfaces(:, 1), :);
+    w = verts(pfaces(:, 2), :) - verts(pfaces(:, 1), :);
+    w_perp = [-w(:, 2), w(:, 1)];
+    w_dot_w = dot(w, w, 2);
+    x = dot(v3v1, w, 2) ./ w_dot_w;
+    % dot(w, w) == dot(w_perp, w_perp)
+    y = dot(v3v1, w_perp, 2) ./ w_dot_w;
+    xys = [x, y];
 end
 
 
