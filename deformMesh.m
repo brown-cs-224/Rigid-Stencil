@@ -1,7 +1,11 @@
-% TODO: State what mesh, constrained, and targets are
-
+% mesh: struct containing vertex, face, and face color information
+% constrained: 1 x 3 matrix containing the indices of each of the
+%    three constrained vertices
+% targets: 3 x 3 matrix containing the coordinates of each of the
+%    three constrained vertices. Rows correspond to different vertices,
+%    columns correspond to x, y, z coordinates
 function mesh2 = deformMesh(mesh, constrained, targets)
-% i1, i2, i3, target1, target2, target3)
+
 mesh2.vertices = mesh.vertices(:, [1 2]); % get rid of z-coord.
 mesh2.faces = mesh.faces;
 mesh2.facevertexcdata = mesh.facevertexcdata;
