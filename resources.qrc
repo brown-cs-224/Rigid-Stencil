@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/shaders">
+        <file alias="shader.frag">shaders/shader.frag</file>
+        <file alias="shader.vert">shaders/shader.vert</file>
+        <file alias="wireframe.frag">shaders/wireframe.frag</file>
+        <file alias="wireframe.vert">shaders/wireframe.vert</file>
+        <file alias="anchorPoint.frag">shaders/anchorPoint.frag</file>
+        <file alias="anchorPoint.vert">shaders/anchorPoint.vert</file>
+    </qresource>
+</RCC>
