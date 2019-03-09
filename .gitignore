@@ -1,0 +1,15 @@
+*.o
+moc_*
+Makefile*
+ui_*
+*.user
+CS123
+.DS_Store
+qrc_resources.cpp
+.qmake.stash
+
+*.pbxproj
+
+*.mak
+
+*.plist

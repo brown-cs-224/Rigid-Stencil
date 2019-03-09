@@ -122,7 +122,7 @@ void View::mousePressEvent(QMouseEvent *event) {
     if (!m_mesh) return;
 
     if (event->button() == Qt::MouseButton::LeftButton) {
-        lastConstrained = m_mesh->getClosestVertexIndex(Vector2f(static_cast<float>(event->x())/height, 1.f - static_cast<float>(event->y())/height), 1.f);
+        lastConstrained = m_mesh->getClosestVertexIndex(Vector2f(static_cast<float>(event->x())/height * this->devicePixelRatio(), 1.f - static_cast<float>(event->y())/height * this->devicePixelRatio()), 1.f);
         if(constrained.find(lastConstrained) == constrained.end())
             lastConstrained = -1;
 
@@ -134,7 +134,7 @@ void View::mouseMoveEvent(QMouseEvent *event) {
     if (!m_mesh) return;
 
     if (held && lastConstrained >= 0) {
-        m_mesh->setVertex(lastConstrained, Vector2f(static_cast<float>(event->x())/height, 1.f - static_cast<float>(event->y())/height));
+        m_mesh->setVertex(lastConstrained, Vector2f(static_cast<float>(event->x())/height * this->devicePixelRatio(), 1.f - static_cast<float>(event->y())/height * this->devicePixelRatio()));
         DeformMesh::deformMesh(m_mesh, oldVertices, constrained, solve, step, m_meshStep2);
     }
 }
@@ -143,7 +143,7 @@ void View::mouseReleaseEvent(QMouseEvent *event) {
     if (!m_mesh) return;
 
     if (event->button() == Qt::MouseButton::RightButton) {
-        Vector2f click = Vector2f(static_cast<float>(event->x())/height, 1.f - static_cast<float>(event->y())/height);
+        Vector2f click = Vector2f(static_cast<float>(event->x())/height * this->devicePixelRatio(), 1.f - static_cast<float>(event->y())/height * this->devicePixelRatio());
         int closest = m_mesh->getClosestVertexIndex(click, 0.1f);
         if (closest >= 0) {
             if (constrained.find(closest) != constrained.end()) {
