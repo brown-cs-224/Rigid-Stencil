@@ -3,7 +3,7 @@
 ViewFormat::ViewFormat()
 {
     setVersion(4, 3);
-    setProfile(QGLFormat::CompatibilityProfile);
+    setProfile(QGLFormat::CoreProfile);
     setStencil(true);
     setStencilBufferSize(8);
     setSampleBuffers(true);

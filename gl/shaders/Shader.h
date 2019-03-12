@@ -34,7 +34,13 @@ public:
     Shader(Shader &&that);
     Shader& operator=(Shader &&that);
 
-    static Shader from_files(const std::string& vert, const std::string& frag, const std::string& dir = "shaders");
+    static Shader from_files(const std::string& vert,
+                             const std::string& frag,
+                             const std::string& dir = "shaders");
+    static Shader from_files_geom(const std::string& vert,
+                                  const std::string& geom,
+                                  const std::string& frag,
+                                  const std::string& dir = "shaders");
 
     void setUniform(const std::string &name, float f);
     void setUniform(const std::string &name, const glm::vec2 &vec2);

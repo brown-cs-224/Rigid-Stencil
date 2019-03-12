@@ -5,6 +5,7 @@
         <file alias="wireframe.frag">shaders/wireframe.frag</file>
         <file alias="wireframe.vert">shaders/wireframe.vert</file>
         <file alias="anchorPoint.frag">shaders/anchorPoint.frag</file>
+        <file alias="anchorPoint.geom">shaders/anchorPoint.geom</file>
         <file alias="anchorPoint.vert">shaders/anchorPoint.vert</file>
     </qresource>
 </RCC>

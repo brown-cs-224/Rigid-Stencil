@@ -43,9 +43,12 @@ void View::initializeGL() {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 
-    m_defaultShader = std::make_shared<Shader>(Shader::from_files("shader.vert", "shader.frag"));
-    m_wireframeShader = std::make_shared<Shader>(Shader::from_files("wireframe.vert", "wireframe.frag"));
-    m_anchorPointShader = std::make_shared<Shader>(Shader::from_files("anchorPoint.vert", "anchorPoint.frag"));
+    m_defaultShader = std::make_shared<Shader>(
+        Shader::from_files("shader.vert", "shader.frag"));
+    m_wireframeShader = std::make_shared<Shader>(
+        Shader::from_files("wireframe.vert", "wireframe.frag"));
+    m_anchorPointShader = std::make_shared<Shader>(
+        Shader::from_files_geom("anchorPoint.vert", "anchorPoint.geom", "anchorPoint.frag"));
 
     // Load default mesh
     loadObj("meshes/grid.obj");
@@ -83,6 +86,7 @@ void View::paintGL() {
 
     if (viewAnchorPoints) {
         m_anchorPointShader->bind();
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
         m_mesh->render(m_anchorPointShader, GL_POINTS);
         m_anchorPointShader->unbind();
     }
@@ -115,6 +119,8 @@ void View::resizeGL(int w, int h) {
     m_anchorPointShader->setUniform("p", p);
     m_anchorPointShader->setUniform("v", v);
     m_anchorPointShader->setUniform("m", m);
+    m_anchorPointShader->setUniform("width", w);
+    m_anchorPointShader->setUniform("height", h);
     m_anchorPointShader->unbind();
 }
 
@@ -122,7 +128,10 @@ void View::mousePressEvent(QMouseEvent *event) {
     if (!m_mesh) return;
 
     if (event->button() == Qt::MouseButton::LeftButton) {
-        lastConstrained = m_mesh->getClosestVertexIndex(Vector2f(static_cast<float>(event->x())/height * this->devicePixelRatio(), 1.f - static_cast<float>(event->y())/height * this->devicePixelRatio()), 1.f);
+        Vector2f click = Vector2f(
+            static_cast<float>(event->x())/height * this->devicePixelRatio(),
+            1.f - static_cast<float>(event->y())/height * this->devicePixelRatio());
+        lastConstrained = m_mesh->getClosestVertexIndex(click, 1.f);
         if(constrained.find(lastConstrained) == constrained.end())
             lastConstrained = -1;
 
@@ -134,7 +143,10 @@ void View::mouseMoveEvent(QMouseEvent *event) {
     if (!m_mesh) return;
 
     if (held && lastConstrained >= 0) {
-        m_mesh->setVertex(lastConstrained, Vector2f(static_cast<float>(event->x())/height * this->devicePixelRatio(), 1.f - static_cast<float>(event->y())/height * this->devicePixelRatio()));
+        Vector2f click = Vector2f(
+            static_cast<float>(event->x())/height * this->devicePixelRatio(),
+            1.f - static_cast<float>(event->y())/height * this->devicePixelRatio());
+        m_mesh->setVertex(lastConstrained, click);
         DeformMesh::deformMesh(m_mesh, oldVertices, constrained, solve, step, m_meshStep2);
     }
 }
@@ -143,7 +155,9 @@ void View::mouseReleaseEvent(QMouseEvent *event) {
     if (!m_mesh) return;
 
     if (event->button() == Qt::MouseButton::RightButton) {
-        Vector2f click = Vector2f(static_cast<float>(event->x())/height * this->devicePixelRatio(), 1.f - static_cast<float>(event->y())/height * this->devicePixelRatio());
+        Vector2f click = Vector2f(
+            static_cast<float>(event->x())/height * this->devicePixelRatio(),
+            1.f - static_cast<float>(event->y())/height * this->devicePixelRatio());
         int closest = m_mesh->getClosestVertexIndex(click, 0.1f);
         if (closest >= 0) {
             if (constrained.find(closest) != constrained.end()) {
